@@ -1,5 +1,5 @@
 # 🥭 MangoLeafVarietyBD: Advanced Hybrid Neural Engine
-[![Streamlit App](https://static.streamlit.io/badge-streamlit.svg)](https://mangoleafvarietybd-software.streamlit.app/)
+[![Streamlit App](https://static.streamlit.io/badge-streamlit.svg)](https://mangoleafveritybd-software-rnxamdw797aqymt3dfofx7.streamlit.app/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=flat&logo=PyTorch&logoColor=white)](https://pytorch.org/)
@@ -9,7 +9,7 @@
 ---
 
 ## 🚀 Live Demo
-Experience the Elite AI Engine here: **[MangoLeafVarietyBD Live App](https://mangoleafvarietybd-software.streamlit.app/)** ---
+Experience the Elite AI Engine here: **[[MangoLeafVarietyBD Live App](https://mangoleafvarietybd-software.streamlit.app/](https://mangoleafveritybd-software-rnxamdw797aqymt3dfofx7.streamlit.app/))** ---
 
 ## 🧬 Technical Architecture
 Unlike standard single-model classifiers, this software employs a **Multi-Model Ensemble Strategy** to ensure robust feature extraction and minimize inference bias.
