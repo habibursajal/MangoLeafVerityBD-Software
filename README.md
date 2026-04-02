@@ -9,7 +9,7 @@
 ---
 
 ## 🚀 Live Demo
-Experience the Elite AI Engine here: **[[MangoLeafVarietyBD Live App](https://mangoleafvarietybd-software.streamlit.app/](https://mangoleafveritybd-software-rnxamdw797aqymt3dfofx7.streamlit.app/))** ---
+Experience the Elite AI Engine here: **[MangoLeafVarietyBD Live App](https://mangoleafveritybd-software-rnxamdw797aqymt3dfofx7.streamlit.app/)**
 
 ## 🧬 Technical Architecture
 Unlike standard single-model classifiers, this software employs a **Multi-Model Ensemble Strategy** to ensure robust feature extraction and minimize inference bias.
