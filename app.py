@@ -302,7 +302,7 @@ with left:
     <div class="chips">
       <span class="chip"><span class="cdot"></span>224×224 input</span>
       <span class="chip"><span class="cdot"></span>4-model ensemble</span>
-      <span class="chip"><span class="cdot"></span>65% threshold</span>
+      <span class="chip"><span class="cdot"></span>80% threshold</span>
     </div>""", unsafe_allow_html=True)
 
     clicked = False
