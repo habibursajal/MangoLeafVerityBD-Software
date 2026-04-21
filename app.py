@@ -234,7 +234,7 @@ def load_engine():
 engine, meta = load_engine()
 OK = engine is not None
 
-THRESHOLD = 65.0
+THRESHOLD = 80.0
 TF = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
