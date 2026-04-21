@@ -18,397 +18,528 @@ st.set_page_config(
 )
 
 # ══════════════════════════════════════════════════════════════════════════════
-# CSS  — one viewport desktop, mobile-app on ≤700 px
+# GLOBAL CSS
 # ══════════════════════════════════════════════════════════════════════════════
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
 
-/* ── reset & base ── */
+/* ── RESET ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-    --amber:    #f59e0b;
-    --amber-d:  #b45309;
-    --amber-l:  #fde68a;
-    --green:    #16a34a;
-    --green-d:  #14532d;
-    --green-l:  #bbf7d0;
-    --bg:       #0a0f0d;
-    --bg2:      #0f1a13;
-    --bg3:      #162019;
-    --surface:  rgba(255,255,255,0.04);
-    --border:   rgba(255,255,255,0.08);
-    --txt:      #f0fdf4;
-    --txt2:     #86efac;
-    --txt3:     #6b7280;
-    --danger:   #ef4444;
-    --danger-bg:rgba(239,68,68,0.1);
+    --c-bg:       #060a07;
+    --c-bg2:      #0b130d;
+    --c-bg3:      #111c13;
+    --c-bg4:      #162019;
+    --c-green:    #22c55e;
+    --c-green-d:  #15803d;
+    --c-green-dd: #14532d;
+    --c-amber:    #f59e0b;
+    --c-amber-l:  #fcd34d;
+    --c-border:   rgba(255,255,255,0.07);
+    --c-border2:  rgba(255,255,255,0.12);
+    --c-txt:      #f0fdf4;
+    --c-txt2:     #a3e6b8;
+    --c-txt3:     #4b7a5c;
+    --c-danger:   #f87171;
+    --c-danger-bg:rgba(248,113,113,0.08);
+    --font-ui:    'DM Sans', sans-serif;
+    --font-disp:  'Syne', sans-serif;
 }
 
-/* ── FORCE LAYOUT TO ONE VIEWPORT ── */
-html, body, [data-testid="stAppViewContainer"] {
-    height: 100vh !important;
-    overflow: hidden !important;
-    background: var(--bg) !important;
-}
+/* ── STREAMLIT SHELL OVERRIDE ── */
+html, body { background: var(--c-bg) !important; }
+
+[data-testid="stAppViewContainer"],
 [data-testid="stAppViewContainer"] > section.main {
-    height: 100vh !important;
-    overflow: hidden !important;
+    background: var(--c-bg) !important;
     padding: 0 !important;
-}
-.block-container {
     height: 100vh !important;
     overflow: hidden !important;
+}
+
+.block-container {
     padding: 0 !important;
     max-width: 100% !important;
+    height: 100vh !important;
+    overflow: hidden !important;
 }
 
-/* ── hide streamlit chrome ── */
-#MainMenu, footer, header[data-testid="stHeader"],
-[data-testid="stToolbar"], [data-testid="stDecoration"],
+/* hide chrome */
+#MainMenu, footer,
+header[data-testid="stHeader"],
+[data-testid="stToolbar"],
+[data-testid="stDecoration"],
 [data-testid="stSidebar"] { display: none !important; }
 
-/* ── full-height wrapper ── */
-.app-shell {
+/* ══════════════════════════════════
+   DESKTOP LAYOUT  (> 768 px)
+   Full viewport in 3 rows:
+   navbar | body (left+right) | footer
+═══════════════════════════════════ */
+.shell {
+    font-family: var(--font-ui);
+    color: var(--c-txt);
+    background: var(--c-bg);
     display: flex;
     flex-direction: column;
     height: 100vh;
-    width: 100%;
-    font-family: 'Outfit', sans-serif;
-    background: var(--bg);
-    color: var(--txt);
     overflow: hidden;
 }
 
-/* ── top navbar ── */
-.navbar {
+/* ── NAV ── */
+.nav {
     flex-shrink: 0;
+    height: 52px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 28px;
-    height: 56px;
-    background: linear-gradient(90deg, var(--green-d) 0%, #0a3d1f 40%, #0a1a0d 100%);
-    border-bottom: 1px solid rgba(255,255,255,0.07);
+    padding: 0 24px;
+    background: linear-gradient(90deg, #0b2010 0%, #091a0c 60%, var(--c-bg) 100%);
+    border-bottom: 1px solid var(--c-border);
     position: relative;
-    overflow: hidden;
+    z-index: 10;
 }
-.navbar::before {
-    content: "";
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse 60% 100% at 75% 50%, rgba(245,158,11,0.08) 0%, transparent 70%);
-    pointer-events: none;
+.nav::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--c-green-d), transparent 60%);
 }
-.nb-brand {
-    display: flex; align-items: center; gap: 10px;
+.nav-brand {
+    display: flex; align-items: center; gap: 9px;
 }
-.nb-icon {
-    font-size: 22px; line-height: 1;
+.nav-brand-icon { font-size: 20px; }
+.nav-brand-name {
+    font-family: var(--font-disp);
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: -0.2px;
+    color: #fff;
 }
-.nb-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 18px; font-weight: 800;
-    color: #ffffff !important;
-    letter-spacing: -0.3px;
+.nav-brand-name em {
+    font-style: normal;
+    color: var(--c-amber);
 }
-.nb-title span { color: var(--amber) !important; }
-
-.nb-pills {
-    display: flex; gap: 8px;
+.nav-tags {
+    display: flex; gap: 6px; align-items: center;
 }
-.nb-pill {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.12);
+.nav-tag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 3px 10px;
     border-radius: 99px;
-    padding: 4px 12px;
-    font-size: 11px; font-weight: 600;
-    color: rgba(255,255,255,0.75) !important;
-    letter-spacing: 0.3px;
+    border: 1px solid var(--c-border2);
+    color: rgba(255,255,255,0.55);
+    background: rgba(255,255,255,0.04);
 }
-.nb-pill.live {
-    background: rgba(22,163,74,0.2);
-    border-color: rgba(22,163,74,0.4);
-    color: #4ade80 !important;
+.nav-tag.status-on {
+    border-color: rgba(34,197,94,0.4);
+    background: rgba(34,197,94,0.1);
+    color: var(--c-green);
     display: flex; align-items: center; gap: 5px;
 }
-.nb-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: #4ade80;
-    box-shadow: 0 0 5px #4ade80;
-    animation: pulse 2s ease-in-out infinite;
+.nav-tag.status-off {
+    border-color: rgba(248,113,113,0.4);
+    background: rgba(248,113,113,0.1);
+    color: var(--c-danger);
 }
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.7)} }
+.blink {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--c-green);
+    box-shadow: 0 0 6px var(--c-green);
+    animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
 
-/* ── body: two columns ── */
-.app-body {
+/* ── BODY ── */
+.body {
     flex: 1;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
+    grid-template-columns: 420px 1fr;
     min-height: 0;
     overflow: hidden;
 }
 
-/* ── panels ── */
+/* ── PANELS ── */
 .panel {
     display: flex;
     flex-direction: column;
-    padding: 18px 22px;
-    gap: 12px;
     overflow: hidden;
+    padding: 16px 20px;
+    gap: 10px;
 }
 .panel-left {
-    border-right: 1px solid var(--border);
-    background: var(--bg2);
+    background: var(--c-bg2);
+    border-right: 1px solid var(--c-border);
 }
 .panel-right {
-    background: var(--bg);
+    background: var(--c-bg);
+    padding: 16px 22px;
 }
 
-.panel-heading {
-    font-size: 11px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 1px;
-    color: var(--txt3) !important;
-    flex-shrink: 0;
-}
-
-/* ── upload zone ── */
-.upload-zone {
-    flex: 1;
-    border: 2px dashed rgba(245,158,11,0.35);
-    border-radius: 16px;
-    background: rgba(245,158,11,0.03);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 10px; cursor: pointer;
-    transition: border-color .2s, background .2s;
-    min-height: 0;
-    position: relative; overflow: hidden;
-}
-.upload-zone:hover {
-    border-color: var(--amber);
-    background: rgba(245,158,11,0.06);
-}
-.uz-icon {
-    width: 48px; height: 48px;
-    background: rgba(245,158,11,0.12);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
-}
-.uz-text { font-size: 13px; color: rgba(255,255,255,0.55) !important; text-align: center; line-height: 1.5; }
-.uz-hint { font-size: 11px; color: var(--txt3) !important; }
-
-/* ── info strip below upload ── */
-.info-strip {
-    flex-shrink: 0;
-    display: flex; gap: 8px; flex-wrap: wrap;
-}
-.info-chip {
-    display: inline-flex; align-items: center; gap: 5px;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 99px; padding: 4px 11px;
-    font-size: 11px; font-weight: 500;
-    color: rgba(255,255,255,0.55) !important;
-}
-.ic-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--amber); }
-
-/* ── analyse button ── */
-.analyse-btn-wrap { flex-shrink: 0; }
-
-/* ── right panel states ── */
-.idle-state {
-    flex: 1;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 12px;
-    border: 1px dashed var(--border);
-    border-radius: 20px;
-    min-height: 0;
-}
-.idle-icon { font-size: 40px; opacity: 0.3; }
-.idle-text { font-size: 13px; color: var(--txt3) !important; text-align: center; line-height: 1.7; }
-
-.result-card {
-    flex: 1;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 22px 24px;
-    display: flex; flex-direction: column;
-    gap: 14px; min-height: 0; overflow: hidden;
-}
-
-.result-tag {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+.panel-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
     text-transform: uppercase;
-    color: #4ade80 !important; padding: 4px 0;
-}
-.result-tag-dot {
-    width: 7px; height: 7px; border-radius: 50%; background: #4ade80;
-    box-shadow: 0 0 6px #4ade80;
-}
-
-.variety-name {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(28px, 3.5vw, 44px);
-    font-weight: 800;
-    color: #ffffff !important;
-    line-height: 1.1;
-    letter-spacing: -0.5px;
-}
-
-.conf-row {
-    display: flex; align-items: baseline; gap: 8px;
-}
-.conf-val {
-    font-size: 28px; font-weight: 700;
-    color: var(--amber) !important;
-}
-.conf-lbl {
-    font-size: 13px;
-    color: var(--txt3) !important;
-}
-
-.conf-bar-wrap {
-    height: 6px; border-radius: 3px;
-    background: rgba(255,255,255,0.07); overflow: hidden;
-}
-.conf-bar {
-    height: 100%; border-radius: 3px;
-    background: linear-gradient(90deg, var(--green), var(--amber));
-    transition: width .6s ease;
-}
-
-.model-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    color: var(--c-txt3);
     flex-shrink: 0;
+    display: flex; align-items: center; gap: 7px;
 }
-.model-chip {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--border);
-    border-radius: 10px; padding: 8px 10px;
-    display: flex; flex-direction: column; gap: 2px;
-}
-.mc-name { font-size: 10px; font-weight: 600; color: var(--txt3) !important; text-transform: uppercase; letter-spacing: .5px; }
-.mc-val  { font-size: 14px; font-weight: 700; color: var(--txt) !important; }
-
-.error-card {
+.panel-label::after {
+    content: '';
     flex: 1;
-    background: var(--danger-bg);
-    border: 1px solid rgba(239,68,68,0.3);
-    border-radius: 20px; padding: 24px;
+    height: 1px;
+    background: var(--c-border);
+}
+
+/* ── IMAGE AREA ── */
+.img-wrap {
+    flex: 1;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--c-border);
+    background: var(--c-bg3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+    position: relative;
+}
+.img-placeholder {
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    gap: 10px; text-align: center; min-height: 0;
+    gap: 10px; height: 100%;
 }
-.err-icon { font-size: 36px; }
-.err-title { font-size: 16px; font-weight: 700; color: var(--danger) !important; }
-.err-body  { font-size: 13px; color: rgba(255,255,255,0.6) !important; line-height: 1.6; }
-
-/* ── footer strip ── */
-.app-footer {
-    flex-shrink: 0;
-    background: var(--green-d);
-    padding: 6px 28px;
-    display: flex; align-items: center;
-    justify-content: space-between; flex-wrap: wrap; gap: 6px;
-    border-top: 1px solid rgba(255,255,255,0.06);
+.img-placeholder-icon {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: rgba(34,197,94,0.08);
+    border: 1px dashed rgba(34,197,94,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
 }
-.af-text { font-size: 11px; color: rgba(255,255,255,0.4) !important; }
-.af-text strong { color: var(--amber) !important; }
+.img-placeholder-text {
+    font-size: 12px;
+    color: var(--c-txt3);
+    text-align: center;
+    line-height: 1.6;
+}
 
-/* ── override Streamlit widget chrome ── */
+/* ── UPLOADER OVERRIDE ── */
 [data-testid="stFileUploader"] {
-    background: transparent !important;
-    border: none !important;
+    flex-shrink: 0 !important;
 }
+[data-testid="stFileUploader"] > label { display: none !important; }
 [data-testid="stFileUploader"] section {
-    background: transparent !important;
-    border: 2px dashed rgba(245,158,11,0.35) !important;
-    border-radius: 14px !important;
-    padding: 20px !important;
+    background: var(--c-bg3) !important;
+    border: 1px dashed rgba(245,158,11,0.3) !important;
+    border-radius: 12px !important;
+    padding: 12px 16px !important;
+    min-height: unset !important;
+    transition: border-color .2s, background .2s !important;
 }
 [data-testid="stFileUploader"] section:hover {
-    border-color: var(--amber) !important;
+    border-color: var(--c-amber) !important;
     background: rgba(245,158,11,0.04) !important;
 }
-[data-testid="stFileUploader"] label {
-    color: #ffffff !important;
-    font-family: 'Outfit', sans-serif !important;
-    font-size: 14px !important; font-weight: 600 !important;
+[data-testid="stFileUploader"] section > div {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    flex-direction: row !important;
+}
+[data-testid="stFileUploader"] label,
+[data-testid="stFileUploader"] span,
+[data-testid="stFileUploader"] small,
+[data-testid="stFileUploader"] p {
+    color: rgba(255,255,255,0.55) !important;
+    font-family: var(--font-ui) !important;
+    font-size: 12px !important;
 }
 [data-testid="stFileUploader"] button {
-    background: var(--amber) !important;
-    color: #000 !important;
-    font-weight: 700 !important;
-    border: none !important;
-    border-radius: 9px !important;
-}
-[data-testid="stFileUploader"] div, [data-testid="stFileUploader"] span,
-[data-testid="stFileUploader"] small, [data-testid="stFileUploader"] p {
-    color: rgba(255,255,255,0.65) !important;
-}
-[data-testid="stImage"] img {
-    border-radius: 12px !important;
-    width: 100% !important;
-    max-height: 200px !important;
-    object-fit: cover !important;
+    background: rgba(245,158,11,0.15) !important;
+    color: var(--c-amber) !important;
+    border: 1px solid rgba(245,158,11,0.35) !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    font-size: 11px !important;
+    padding: 5px 12px !important;
+    white-space: nowrap !important;
 }
 
-/* Streamlit button */
-.stButton > button {
-    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%) !important;
-    color: #ffffff !important;
-    border: none !important;
-    border-radius: 12px !important;
-    padding: 12px 0 !important;
-    font-family: 'Outfit', sans-serif !important;
-    font-size: 14px !important; font-weight: 700 !important;
-    width: 100% !important;
+/* ── CHIPS ROW ── */
+.chips-row {
+    display: flex; gap: 6px; flex-wrap: wrap;
+    flex-shrink: 0;
+}
+.chip {
+    font-size: 10px; font-weight: 600;
     letter-spacing: 0.3px;
-    box-shadow: 0 4px 16px rgba(22,163,74,0.3) !important;
+    padding: 3px 10px; border-radius: 99px;
+    border: 1px solid var(--c-border);
+    color: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.03);
+    display: flex; align-items: center; gap: 5px;
+}
+.chip-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--c-amber); }
+
+/* ── ANALYSE BUTTON ── */
+.stButton > button {
+    background: linear-gradient(135deg, var(--c-green-d) 0%, #166534 100%) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 10px 0 !important;
+    font-family: var(--font-disp) !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px !important;
+    width: 100% !important;
+    box-shadow: 0 4px 18px rgba(21,128,61,0.25) !important;
     transition: transform .15s, box-shadow .15s !important;
 }
 .stButton > button:hover {
     transform: translateY(-1px) !important;
-    box-shadow: 0 6px 22px rgba(22,163,74,0.42) !important;
+    box-shadow: 0 6px 24px rgba(21,128,61,0.38) !important;
 }
 
-/* Progress bar */
-.stProgress > div > div > div > div {
-    background: linear-gradient(90deg, #16a34a, #f59e0b) !important;
+/* ── RIGHT PANEL STATES ── */
+.idle-box {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    border: 1px dashed var(--c-border);
+    border-radius: 18px;
+    min-height: 0;
+}
+.idle-glyph { font-size: 36px; opacity: 0.2; }
+.idle-msg {
+    font-size: 12px;
+    color: var(--c-txt3);
+    text-align: center;
+    line-height: 1.8;
 }
 
-/* Spinner */
-[data-testid="stSpinner"] { color: var(--amber) !important; }
-[data-testid="stSpinner"] > div { border-top-color: var(--amber) !important; }
+/* ── RESULT CARD ── */
+.rcard {
+    flex: 1;
+    background: var(--c-bg3);
+    border: 1px solid var(--c-border);
+    border-radius: 18px;
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 0;
+    overflow: hidden;
+    position: relative;
+}
+.rcard::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--c-green-d), var(--c-amber), transparent 80%);
+    border-radius: 18px 18px 0 0;
+}
 
-/* ════ MOBILE  (≤700px) ════════════════════════════════════════ */
-@media (max-width: 700px) {
-    html, body, [data-testid="stAppViewContainer"],
+.r-tag {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--c-green);
+}
+.r-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--c-green);
+    box-shadow: 0 0 8px var(--c-green);
+}
+
+.r-variety {
+    font-family: var(--font-disp);
+    font-size: clamp(26px, 3.2vw, 42px);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.05;
+    letter-spacing: -0.5px;
+}
+
+.r-conf-row {
+    display: flex; align-items: baseline; gap: 8px;
+}
+.r-conf-num {
+    font-family: var(--font-disp);
+    font-size: 32px; font-weight: 800;
+    color: var(--c-amber);
+    line-height: 1;
+}
+.r-conf-lbl {
+    font-size: 12px;
+    color: var(--c-txt3);
+}
+
+.r-bar-track {
+    height: 5px; border-radius: 3px;
+    background: rgba(255,255,255,0.06);
+    overflow: hidden; flex-shrink: 0;
+}
+.r-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--c-green-d), var(--c-amber));
+    transition: width .7s cubic-bezier(.4,0,.2,1);
+}
+
+.r-divider {
+    height: 1px;
+    background: var(--c-border);
+    flex-shrink: 0;
+}
+
+.r-models-label {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    color: var(--c-txt3); flex-shrink: 0;
+}
+
+.r-model-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    flex-shrink: 0;
+}
+.r-mchip {
+    background: var(--c-bg4);
+    border: 1px solid var(--c-border);
+    border-radius: 10px;
+    padding: 9px 10px;
+    display: flex; flex-direction: column; gap: 3px;
+}
+.r-mchip-name {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    color: var(--c-txt3);
+}
+.r-mchip-val {
+    font-family: var(--font-disp);
+    font-size: 15px; font-weight: 700;
+    color: var(--c-txt);
+}
+.r-mchip-bar {
+    height: 3px; border-radius: 2px;
+    background: rgba(255,255,255,0.07); overflow: hidden; margin-top: 2px;
+}
+.r-mchip-bar-fill {
+    height: 100%; border-radius: 2px;
+    background: var(--c-green);
+    opacity: 0.7;
+}
+
+/* ── ERROR CARD ── */
+.ecard {
+    flex: 1;
+    border: 1px solid rgba(248,113,113,0.2);
+    border-radius: 18px;
+    background: var(--c-danger-bg);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 8px; min-height: 0;
+    text-align: center; padding: 24px;
+}
+.e-icon { font-size: 32px; }
+.e-title { font-family: var(--font-disp); font-size: 16px; font-weight: 700; color: var(--c-danger); }
+.e-body { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.7; }
+
+/* ── FOOTER ── */
+.foot {
+    flex-shrink: 0;
+    height: 34px;
+    background: var(--c-bg2);
+    border-top: 1px solid var(--c-border);
+    display: flex; align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+}
+.foot-txt {
+    font-size: 10px;
+    color: var(--c-txt3);
+    letter-spacing: 0.2px;
+}
+.foot-txt strong { color: var(--c-amber); font-weight: 600; }
+.foot-models {
+    display: flex; gap: 5px;
+}
+.foot-model-tag {
+    font-size: 9px; font-weight: 600;
+    letter-spacing: 0.3px;
+    padding: 2px 8px; border-radius: 99px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--c-border);
+    color: rgba(255,255,255,0.3);
+}
+
+/* image override */
+[data-testid="stImage"] {
+    width: 100% !important;
+    height: 100% !important;
+}
+[data-testid="stImage"] img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: 0 !important;
+}
+
+/* spinner */
+[data-testid="stSpinner"] > div { border-top-color: var(--c-amber) !important; }
+
+/* ══════════════════════════════════
+   MOBILE  (≤ 768px)
+═══════════════════════════════════ */
+@media (max-width: 768px) {
+    [data-testid="stAppViewContainer"],
     [data-testid="stAppViewContainer"] > section.main,
-    .block-container {
+    .block-container, .shell {
         height: auto !important;
-        overflow: auto !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
     }
-    .app-shell { height: auto !important; overflow: auto !important; }
-    .navbar { height: auto; padding: 12px 16px; flex-wrap: wrap; gap: 8px; }
-    .nb-pills { flex-wrap: wrap; }
-    .app-body {
+
+    .nav { height: auto; padding: 10px 14px; flex-wrap: wrap; gap: 6px; }
+    .nav-tags { flex-wrap: wrap; }
+
+    .body {
         grid-template-columns: 1fr !important;
-        overflow: auto !important;
         height: auto !important;
+        overflow: visible !important;
     }
-    .panel { padding: 14px 14px; }
-    .panel-left { border-right: none; border-bottom: 1px solid var(--border); }
-    .upload-zone { min-height: 150px; }
-    .variety-name { font-size: 30px; }
-    .model-grid { grid-template-columns: 1fr 1fr; }
-    .app-footer { flex-direction: column; gap: 3px; padding: 10px 16px; }
+    .panel {
+        padding: 14px 14px;
+        overflow: visible !important;
+    }
+    .panel-left {
+        border-right: none !important;
+        border-bottom: 1px solid var(--c-border) !important;
+    }
+    .img-wrap { min-height: 200px; }
+    .r-model-grid { grid-template-columns: 1fr 1fr !important; }
+    .r-variety { font-size: 28px !important; }
+    .r-conf-num { font-size: 26px !important; }
+
+    .foot {
+        height: auto; padding: 10px 14px;
+        flex-direction: column; gap: 4px; align-items: flex-start;
+    }
+    .foot-models { flex-wrap: wrap; }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -482,90 +613,95 @@ def run_inference(img: Image.Image):
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# UI
+# RENDER
 # ══════════════════════════════════════════════════════════════════════════════
 def main():
-    live_status = "ONLINE" if engine_ok else "OFFLINE"
-    live_class  = "live" if engine_ok else ""
+    status_cls  = "status-on"  if engine_ok else "status-off"
+    status_txt  = "ONLINE"     if engine_ok else "OFFLINE"
+    status_dot  = '<span class="blink"></span>' if engine_ok else "✕"
 
-    # ── Navbar ────────────────────────────────────────────────────────────────
+    # ── NAVBAR ────────────────────────────────────────────────────────────────
     st.markdown(f"""
-    <div class="app-shell">
-    <nav class="navbar">
-        <div class="nb-brand">
-            <span class="nb-icon">🥭</span>
-            <span class="nb-title">MangoLeaf<span>VarietyBD</span></span>
+    <div class="shell">
+      <nav class="nav">
+        <div class="nav-brand">
+          <span class="nav-brand-icon">🥭</span>
+          <span class="nav-brand-name">MangoLeaf<em>VarietyBD</em></span>
         </div>
-        <div class="nb-pills">
-            <span class="nb-pill">Hybrid Ensemble ×4</span>
-            <span class="nb-pill">MangoLeafVarietyBD Dataset</span>
-            <span class="nb-pill {live_class}">
-                {'<span class="nb-dot"></span>' if engine_ok else ''}
-                {live_status}
-            </span>
+        <div class="nav-tags">
+          <span class="nav-tag">Hybrid Ensemble ×4</span>
+          <span class="nav-tag">MangoLeafVarietyBD Dataset</span>
+          <span class="nav-tag {status_cls}">{status_dot} {status_txt}</span>
         </div>
-    </nav>
+      </nav>
+      <div class="body">
     """, unsafe_allow_html=True)
 
-    # ── Body ──────────────────────────────────────────────────────────────────
-    st.markdown('<div class="app-body">', unsafe_allow_html=True)
-
-    # Left panel
+    # ── LEFT PANEL ────────────────────────────────────────────────────────────
     st.markdown('<div class="panel panel-left">', unsafe_allow_html=True)
-    st.markdown('<div class="panel-heading">Input sample</div>', unsafe_allow_html=True)
+    st.markdown('<div class="panel-label">Input Sample</div>', unsafe_allow_html=True)
 
+    # File uploader (compact)
     uploaded = st.file_uploader(
-        "Upload mango leaf image",
+        "Upload",
         type=["jpg", "jpeg", "png"],
         label_visibility="collapsed",
     )
 
+    # Image preview area
     if uploaded:
         img = Image.open(uploaded).convert("RGB")
+        st.markdown('<div class="img-wrap">', unsafe_allow_html=True)
         st.image(img, use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True)
     else:
         st.markdown("""
-        <div class="upload-zone">
-            <div class="uz-icon">🍃</div>
-            <div class="uz-text">Drop mango leaf image here<br>or use the uploader above</div>
-            <div class="uz-hint">JPG · JPEG · PNG</div>
+        <div class="img-wrap">
+          <div class="img-placeholder">
+            <div class="img-placeholder-icon">🍃</div>
+            <div class="img-placeholder-text">
+              No image loaded<br>
+              <span style="opacity:.5;font-size:11px">JPG · JPEG · PNG</span>
+            </div>
+          </div>
         </div>
         """, unsafe_allow_html=True)
 
+    # Info chips
     st.markdown("""
-    <div class="info-strip">
-        <span class="info-chip"><span class="ic-dot"></span>224×224 inference</span>
-        <span class="info-chip"><span class="ic-dot"></span>4-model ensemble</span>
-        <span class="info-chip"><span class="ic-dot"></span>65% threshold</span>
+    <div class="chips-row">
+      <span class="chip"><span class="chip-dot"></span>224×224 resize</span>
+      <span class="chip"><span class="chip-dot"></span>4-model ensemble</span>
+      <span class="chip"><span class="chip-dot"></span>65% threshold</span>
     </div>
     """, unsafe_allow_html=True)
 
+    # Analyse button
     analyse_clicked = False
     if uploaded:
         analyse_clicked = st.button("🔬  Analyse Leaf", use_container_width=True)
 
-    st.markdown("</div>", unsafe_allow_html=True)  # close panel-left
+    st.markdown("</div>", unsafe_allow_html=True)  # /panel-left
 
-    # Right panel
+    # ── RIGHT PANEL ───────────────────────────────────────────────────────────
     st.markdown('<div class="panel panel-right">', unsafe_allow_html=True)
-    st.markdown('<div class="panel-heading">Detection result</div>', unsafe_allow_html=True)
+    st.markdown('<div class="panel-label">Detection Result</div>', unsafe_allow_html=True)
 
     if analyse_clicked and uploaded:
         if not engine_ok:
             st.markdown("""
-            <div class="error-card">
-                <div class="err-icon">⚠️</div>
-                <div class="err-title">Engine Offline</div>
-                <div class="err-body">
-                    Hybrid-MangoLeaf_bundle.pth not found.<br>
-                    Place the bundle file in the same directory as this script.
-                </div>
+            <div class="ecard">
+              <div class="e-icon">⚠️</div>
+              <div class="e-title">Engine Offline</div>
+              <div class="e-body">
+                <code>Hybrid-MangoLeaf_bundle.pth</code> not found.<br>
+                Place the bundle file in the same directory as this script.
+              </div>
             </div>
             """, unsafe_allow_html=True)
         else:
             with st.spinner("Running ensemble inference…"):
                 variety, score, per_model = run_inference(img)
-
             st.session_state["result"] = (variety, score, per_model)
 
     if "result" in st.session_state and uploaded:
@@ -573,45 +709,44 @@ def main():
 
         if score < THRESHOLD:
             st.markdown(f"""
-            <div class="error-card">
-                <div class="err-icon">❌</div>
-                <div class="err-title">Invalid Input Detected</div>
-                <div class="err-body">
-                    Confidence {score:.1f}% is below the {THRESHOLD:.0f}% threshold.<br>
-                    This may not be a recognisable mango leaf.<br>
-                    Please upload a clear image on a plain background.
-                </div>
+            <div class="ecard">
+              <div class="e-icon">❌</div>
+              <div class="e-title">Below Confidence Threshold</div>
+              <div class="e-body">
+                Score {score:.1f}% &lt; {THRESHOLD:.0f}% threshold.<br>
+                This may not be a recognisable mango leaf.<br>
+                Please upload a clear image on a plain background.
+              </div>
             </div>
             """, unsafe_allow_html=True)
         else:
-            # Build model chips HTML
+            # Build model chips
             chips_html = ""
             for mname, mconf in per_model.items():
+                bar_w = min(mconf, 100)
                 chips_html += f"""
-                <div class="model-chip">
-                    <span class="mc-name">{mname}</span>
-                    <span class="mc-val">{mconf:.1f}%</span>
+                <div class="r-mchip">
+                  <span class="r-mchip-name">{mname}</span>
+                  <span class="r-mchip-val">{mconf:.1f}%</span>
+                  <div class="r-mchip-bar">
+                    <div class="r-mchip-bar-fill" style="width:{bar_w:.1f}%"></div>
+                  </div>
                 </div>"""
 
             st.markdown(f"""
-            <div class="result-card">
-                <div class="result-tag">
-                    <span class="result-tag-dot"></span>
-                    Variety Identified
-                </div>
-                <div class="variety-name">{variety}</div>
-                <div class="conf-row">
-                    <span class="conf-val">{score:.1f}%</span>
-                    <span class="conf-lbl">ensemble confidence</span>
-                </div>
-                <div class="conf-bar-wrap">
-                    <div class="conf-bar" style="width:{min(score,100):.1f}%"></div>
-                </div>
-                <div style="font-size:11px;font-weight:700;text-transform:uppercase;
-                            letter-spacing:.9px;color:rgba(255,255,255,0.35);margin-top:4px;">
-                    Per-model scores
-                </div>
-                <div class="model-grid">{chips_html}</div>
+            <div class="rcard">
+              <div class="r-tag"><span class="r-dot"></span>Variety Identified</div>
+              <div class="r-variety">{variety}</div>
+              <div class="r-conf-row">
+                <span class="r-conf-num">{score:.1f}%</span>
+                <span class="r-conf-lbl">ensemble confidence</span>
+              </div>
+              <div class="r-bar-track">
+                <div class="r-bar-fill" style="width:{min(score,100):.1f}%"></div>
+              </div>
+              <div class="r-divider"></div>
+              <div class="r-models-label">Per-Model Scores</div>
+              <div class="r-model-grid">{chips_html}</div>
             </div>
             """, unsafe_allow_html=True)
 
@@ -619,28 +754,34 @@ def main():
                 st.balloons()
     else:
         st.markdown("""
-        <div class="idle-state">
-            <div class="idle-icon">🍃</div>
-            <div class="idle-text">Neural engine idle<br>Upload a sample and click Analyse</div>
+        <div class="idle-box">
+          <div class="idle-glyph">🍃</div>
+          <div class="idle-msg">
+            Neural engine idle<br>
+            Upload a leaf sample and click <strong style="color:rgba(255,255,255,.4)">Analyse</strong>
+          </div>
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown("</div>", unsafe_allow_html=True)  # close panel-right
-    st.markdown("</div>", unsafe_allow_html=True)  # close app-body
+    st.markdown("</div>", unsafe_allow_html=True)  # /panel-right
 
-    # ── Footer ────────────────────────────────────────────────────────────────
+    # ── CLOSE BODY + FOOTER ───────────────────────────────────────────────────
     st.markdown("""
-    <div class="app-footer">
-        <span class="af-text">
-            Developed by <strong>Habibur Rahman Sajal</strong>
-            &nbsp;·&nbsp; MangoLeafVarietyBD Dataset
+      </div><!-- /body -->
+      <footer class="foot">
+        <span class="foot-txt">
+          Developed by <strong>Habibur Rahman Sajal</strong>
+          &nbsp;·&nbsp; MangoLeafVarietyBD Dataset
         </span>
-        <span class="af-text">
-            EfficientNetB0 · MobileNetV2 · DeiT-Tiny · Swin-Tiny
-        </span>
-    </div>
-    </div>
-    """, unsafe_allow_html=True)  # last </div> closes app-shell
+        <div class="foot-models">
+          <span class="foot-model-tag">EfficientNetB0</span>
+          <span class="foot-model-tag">MobileNetV2</span>
+          <span class="foot-model-tag">DeiT-Tiny</span>
+          <span class="foot-model-tag">Swin-Tiny</span>
+        </div>
+      </footer>
+    </div><!-- /shell -->
+    """, unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
